@@ -17,7 +17,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % clear; close all; clc;
-Exp_ID = 'ExpA1'
+Exp_ID = 'ExpA2'
 Env_ID = 'Env1'
 
 % add required libraries to the path

@@ -35,8 +35,8 @@ Specially, the file contains 9 columns:
 ### Exp A:
 | ID | Training | Eval-Env1 | Eval-Env2 | Eval-Env3 | Eval-Env4 |
 | --- | --- | --- | --- | --- | --- |
-| A1 | ASV17_train |  |  | 38.8 |  |
-| A2 | ASV17_train+dev |  |  | 48.72 |  |
+| A1 | ASV17_train | 49.74 |  | 41.03 | 48.18 |
+| A2 | ASV17_train+dev | 47.10 |  | 48.95 | 39.63 |
 
 
 ### Exp A+:
