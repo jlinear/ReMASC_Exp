@@ -18,7 +18,7 @@
 
 % clear; close all; clc;
 Exp_ID = 'ExpA1'
-Env_ID = 'Env3'
+Env_ID = 'Env1'
 
 % add required libraries to the path
 addpath(genpath('utility'));
@@ -120,7 +120,8 @@ disp('Computing scores for evaluation trials...');
 h = waitbar(0,'please wait');
 l = length(filelist);
 for i=1:length(filelist)
-    tmp_fname = strcat(int2str(filelist(i)), '.wav');
+%     tmp_fname = strcat(int2str(filelist(i)), '.wav');
+    tmp_fname = strcat(sprintf('%06d',filelist(i)),'.wav'); %for env1 only!!!
     filePath = fullfile(pathToEvalData, tmp_fname);
 %     [x,fs] = audioread(filePath);
     

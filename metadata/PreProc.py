@@ -6,8 +6,8 @@ Preprocessing for metadata script
 
 import os
 
-metadata_csv_in = './Env3_meta/Env3_meta.csv'
-metadata_csv_out = './Env3_meta/Env3_meta_aligned.csv'
+metadata_csv_in = './Env1_meta/Env1_meta.csv'
+metadata_csv_out = './Env1_meta/Env1_meta_aligned.csv'
 
 f = open(metadata_csv_in)
 lines = f.readlines()
@@ -18,7 +18,7 @@ s = set()
 
 for line in lines:
 	item = line.split(',')
-	pt = '../data/Env3/' + str(item[0]) + '.wav'
+	pt = '../data/Env1/' + str(item[0]) + '.wav'
 	if os.path.exists(pt) and item[0] not in s:
 		new_lines.append(line)
 		s.add(item[0])
