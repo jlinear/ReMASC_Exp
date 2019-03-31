@@ -1,0 +1,22 @@
+# ReMASC Dataset
+Welcome to use ReMASC dataset. Here is the description of the data files:
+
+## Directory structure:
+
+1 *Metadata* directory contains metadata descriptions for all .wav files.   
+2 *Data* directory contains all data files in the form of .wav  
+
+## Annotations:
+The Annotation.xlsx file records the full annotation information of the audio files.
+
+Specially, the file contains 9 columns:
+
+**Column 1:** Unique File ID, aligned with the file name.
+**Column 2:** Speech Type ID (1 = source, 2 = genuine, 3 = replayed).
+**Column 3:** Speaker ID, i.e., Unique Speaker Identifier, consistent with the UID in "Recruitment Form.xlsx".
+**Column 4:** Command ID, consistent with the ID in "command.xlsx".
+**Column 5:** Environment ID (1 = outdoor, 2 = indoor environment 1, 3 = indoor environment 2, 4 = vehicle environment), see the paper for details.
+**Column 6**: Position ID (-1 = N/A, Env1: 1 = 0.5m 2 = 1.5m; Env4: 1 = quite 2 = moving
+**Column 7:** Source Recorder ID ( -1 = N/A, 1 = DR_05, 2 = iPod, 3 = TTS)
+**Column 8:** Playback Device ID ( -1 = N/A, 1 = Audio Technica ATH-AD700X headphone, 2 = iPod Touch, 3 = Sony SRS*X11, 4 = Sony SRS*X5)
+**Column 9:** Recording Device ID ( -1 = N/A, 1 = AIY, 2 = Respeaker 4_Linear, 3 = Respeaker Core V2.0, 4 = Amlogic A113X1)
