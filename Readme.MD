@@ -48,7 +48,7 @@ Matlab code: baseline_Ap.m
 | --- | --- | --- |
 | Ap1 | All |  40? |
 | Ap2 | All+train+dev |  <25? |
-| Ap1_4 | Env4(waiting env2) |  |
+| Ap1_4 | Env4(waiting env2) | 45.68 |
 
 
 ### Exp B:
