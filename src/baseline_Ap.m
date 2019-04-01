@@ -108,6 +108,47 @@ save(spf_save_path,'-struct','spoofGMM');
 disp('Done!');
 
 
+%% Feature extraction and scoring of evaluation data
+
+% read development protocol
+fileID = fopen(evalProtocolFile);
+protocol = textscan(fileID, '%s%s%s%s%s%s%s');
+fclose(fileID);
+
+% get file and label lists
+filelist = protocol{1};
+labels = protocol{2};
+
+% process each development trial: feature extraction and scoring
+scores = zeros(size(filelist));
+disp('Computing scores for evaluation trials...');
+parfor i=1:length(filelist)
+    filePath = fullfile(pathToEvalData,filelist{i});
+    [x,fs] = audioread(filePath);
+    % featrue extraction
+    x_cqcc = cqcc(x, fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
+    
+    save_name = strrep(filelist{i},'.wav','_cqcc.mat');
+    save_path = fullfile(EvalFeatureSavePath, save_name);
+%     parsave(save_path, x_cqcc);
+
+    %score computation
+    llk_genuine = mean(compute_llk(x_cqcc,genuineGMM.m,genuineGMM.s,genuineGMM.w));
+    llk_spoof = mean(compute_llk(x_cqcc,spoofGMM.m,spoofGMM.s,spoofGMM.w));
+    % compute log-likelihood ratio
+    scores(i) = llk_genuine - llk_spoof;
+end
+disp('Done!');
+
+% compute performance
+[Pmiss,Pfa] = rocch(scores(strcmp(labels,'genuine')),scores(strcmp(labels,'spoof')));
+EER = rocch2eer(Pmiss,Pfa) * 100; 
+eer_name = strcat(Exp_ID, Env_ID, '.mat');
+eer_path = fullfile(EerSavePath, eer_name);
+save(eer_path, 'EER');
+fprintf('EER is %.2f\n', EER);
+
+
 
 %% Other Functions
 function parsave(fname, x)
