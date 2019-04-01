@@ -16,7 +16,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % clear; close all; clc;
-Exp_ID = 'ExpAp1'
+Exp_ID = 'ExpAp1_4'
 Env_ID = 'Env4'
 
 % add required libraries to the path
@@ -29,9 +29,11 @@ run(vlfeat_path);
 
 % set paths to the wave files and protocols
 pathToTrainData = fullfile('..','data',Env_ID);
-pathToEvalData = fullfile('..','data','ASVspoof2017_eval');
+% pathToEvalData = fullfile('..','data','ASVspoof2017_eval');
+pathToEvalData = fullfile('..','data',Env_ID);
 trainProtocolFile = fullfile('..','metadata',strcat(Env_ID,'_meta'),strcat(Env_ID,'_meta_aligned.csv'));
-evalProtocolFile = fullfile('..','data','ASVspoof2017_protocol', 'ASVspoof2017_eval.txt');
+% evalProtocolFile = fullfile('..','data','ASVspoof2017_protocol', 'ASVspoof2017_eval.txt');
+evalProtocolFile = fullfile('..','metadata',strcat(Env_ID,'_meta'),strcat(Env_ID,'_meta_aligned.csv'));
 
 % set save path:
 GmmSavePath = fullfile('.','intermediate','gmm',Exp_ID);
@@ -108,47 +110,97 @@ spoofIdx = find(labels == 3);
 % disp('Done!');
 
 
-%% Feature extraction and scoring of evaluation data
+% %% Feature extraction and scoring of evaluation data
+% 
+% % read development protocol
+% fileID = fopen(evalProtocolFile);
+% protocol = textscan(fileID, '%s%s%s%s%s%s%s');
+% fclose(fileID);
+% 
+% % get file and label lists
+% filelist = protocol{1};
+% labels = protocol{2};
+% 
+% % process each development trial: feature extraction and scoring
+% scores = zeros(size(filelist));
+% disp('Computing scores for evaluation trials...');
+% parfor i=1:length(filelist)
+%     filePath = fullfile(pathToEvalData,filelist{i});
+%     [x,fs] = audioread(filePath);
+%     % featrue extraction
+%     x_cqcc = cqcc(x, fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
+%     
+%     save_name = strrep(filelist{i},'.wav','_cqcc.mat');
+%     save_path = fullfile(EvalFeatureSavePath, save_name);
+% %     parsave(save_path, x_cqcc);
+% 
+%     %score computation
+%     llk_genuine = mean(compute_llk(x_cqcc,genuineGMM.m,genuineGMM.s,genuineGMM.w));
+%     llk_spoof = mean(compute_llk(x_cqcc,spoofGMM.m,spoofGMM.s,spoofGMM.w));
+%     % compute log-likelihood ratio
+%     scores(i) = llk_genuine - llk_spoof;
+% end
+% disp('Done!');
+% 
+% % compute performance
+% [Pmiss,Pfa] = rocch(scores(strcmp(labels,'genuine')),scores(strcmp(labels,'spoof')));
+% EER = rocch2eer(Pmiss,Pfa) * 100; 
+% eer_name = strcat(Exp_ID, Env_ID, '.mat');
+% eer_path = fullfile(EerSavePath, eer_name);
+% save(eer_path, 'EER');
+% fprintf('EER is %.2f\n', EER);
 
-% read development protocol
+%% Feature extraction and scoring of ReMASC data
+
+% read Evaluation protocol
 fileID = fopen(evalProtocolFile);
-protocol = textscan(fileID, '%s%s%s%s%s%s%s');
+protocol = textscan(fileID, '%d,%d,%d,%d,%d,%d,%d,%d,%d');
 fclose(fileID);
 
 % get file and label lists
 filelist = protocol{1};
 labels = protocol{2};
 
-% process each development trial: feature extraction and scoring
+% process each evaluation trial: feature extraction and scoring
 scores = zeros(size(filelist));
 disp('Computing scores for evaluation trials...');
-parfor i=1:length(filelist)
-    filePath = fullfile(pathToEvalData,filelist{i});
-    [x,fs] = audioread(filePath);
-    % featrue extraction
-    x_cqcc = cqcc(x, fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
+h = waitbar(0,'please wait');
+l = length(filelist);
+for i=1:length(filelist)
+    tmp_fname = strcat(int2str(filelist(i)), '.wav');
+%     tmp_fname = strcat(sprintf('%06d',filelist(i)),'.wav'); %for env1 only!!!
+    filePath = fullfile(pathToEvalData, tmp_fname);
+%     [x,fs] = audioread(filePath);
     
-    save_name = strrep(filelist{i},'.wav','_cqcc.mat');
+    [x, fs] = ReSamp(filePath, 16000);
+    % featrue extraction
+    tmp_fea = cqcc(x(:,1), fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
+    x_cqcc = tmp_fea;
+    
+    save_name = strcat(int2str(filelist(i)),'_cqcc.mat');
     save_path = fullfile(EvalFeatureSavePath, save_name);
-%     parsave(save_path, x_cqcc);
+%     parsave(save_path, tmp_fea);
 
-    %score computation
+    % score computation
     llk_genuine = mean(compute_llk(x_cqcc,genuineGMM.m,genuineGMM.s,genuineGMM.w));
     llk_spoof = mean(compute_llk(x_cqcc,spoofGMM.m,spoofGMM.s,spoofGMM.w));
     % compute log-likelihood ratio
     scores(i) = llk_genuine - llk_spoof;
+    msg = ['Evaluating',num2str(i/l*100),'%'];
+    waitbar(i/length(filelist),h,msg);
 end
 disp('Done!');
 
-% compute performance
-[Pmiss,Pfa] = rocch(scores(strcmp(labels,'genuine')),scores(strcmp(labels,'spoof')));
-EER = rocch2eer(Pmiss,Pfa) * 100; 
+
+%% Compute performance (EER)
+% [Pmiss,Pfa] =
+% rocch(scores(strcmp(labels,'genuine')),scores(strcmp(labels,'spoof')));
+[Pmiss,Pfa] = rocch(scores(labels == 2),scores(labels == 3));
+EER = rocch2eer(Pmiss,Pfa) * 100;
 eer_name = strcat(Exp_ID, Env_ID, '.mat');
 eer_path = fullfile(EerSavePath, eer_name);
 save(eer_path, 'EER');
 fprintf('EER is %.2f\n', EER);
-
-
 
 %% Other Functions
 function parsave(fname, x)
