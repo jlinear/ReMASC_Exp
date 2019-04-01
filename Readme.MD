@@ -34,6 +34,7 @@ Specially, the file contains 9 columns:
 
 ### Exp A:
 Matlab code: baseline_A.m
+
 | ID | Training | Eval-Env1 | Eval-Env2 | Eval-Env3 | Eval-Env4 |
 | --- | --- | --- | --- | --- | --- |
 | A1 | ASV17_train | 49.74 |  | 41.03 | 48.18 |
@@ -42,6 +43,7 @@ Matlab code: baseline_A.m
 
 ### Exp A+:
 Matlab code: baseline_Ap.m
+
 | ID | Training | Eval |
 | --- | --- | --- |
 | Ap1 | All |  40? |
@@ -51,6 +53,7 @@ Matlab code: baseline_Ap.m
 
 ### Exp B:
 Matlab code: baseline_B.m
+
 | ID | Env | Train (speaker IDs) | Eval (speaker IDs) | EER |
 | --- | --- | --- | --- | --- |
 | B1 | Env1 |  |  |  |
@@ -61,6 +64,7 @@ Matlab code: baseline_B.m
 
 ### Exp C:
 Matlab code: baseline_C.m
+
 | ID | Training | Eval | EER |
 | --- | --- | --- | --- |
 | C1 | Env 2,3,4 | Env1 |  |
