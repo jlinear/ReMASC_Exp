@@ -141,15 +141,13 @@ filelist = protocol{1};
 labels = protocol{2};
 speakerID = protocol{3};
 
-evalIdx = find(ismember(speakerID, evalList));
-
 % process each evaluation trial: feature extraction and scoring
 scores = zeros(size(filelist));
 disp('Computing scores for evaluation trials...');
 h = waitbar(0,'please wait');
-l = length(evalIdx);
-for i=1:length(evalIdx)
-    tmp_fname = strcat(int2str(filelist(evalIdx(i))), '.wav');
+l = length(filelist);
+for i=1:length(filelist)
+    tmp_fname = strcat(int2str(filelist(i)), '.wav');
 %     tmp_fname = strcat(sprintf('%06d',filelist(i)),'.wav'); %for env1 only!!!
     filePath = fullfile(pathToEvalData, tmp_fname);
 %     [x,fs] = audioread(filePath);
@@ -159,7 +157,7 @@ for i=1:length(evalIdx)
     tmp_fea = cqcc(x(:,1), fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
     x_cqcc = tmp_fea;
     
-    save_name = strcat(int2str(filelist(evalIdx(i))),'_cqcc.mat');
+    save_name = strcat(int2str(filelist(i)),'_cqcc.mat');
     save_path = fullfile(EvalFeatureSavePath, save_name);
 %     parsave(save_path, tmp_fea);
 
@@ -169,7 +167,7 @@ for i=1:length(evalIdx)
     % compute log-likelihood ratio
     scores(i) = llk_genuine - llk_spoof;
     msg = ['Evaluating',num2str(i/l*100),'%'];
-    waitbar(i/length(evalIdx),h,msg);
+    waitbar(i/length(filelist),h,msg);
 end
 disp('Done!');
 
