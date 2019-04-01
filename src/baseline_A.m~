@@ -17,7 +17,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % clear; close all; clc;
-Exp_ID = 'ExpA1'
+Exp_ID = 'ExpA2'
 Env_ID = 'Env1'
 
 % add required libraries to the path
@@ -25,7 +25,8 @@ addpath(genpath('utility'));
 addpath(genpath('CQCC_v1.0'));
 addpath(genpath('bosaris_toolkit'));
 % load vlfeat (for gmm training)
-run('vlfeat-0.9.21/toolbox/vl_setup');
+vlfeat_path = fullfile('.','vlfeat-0.9.21','toolbox','vl_setup');
+run(vlfeat_path);
 
 % set paths to the wave files and protocols
 pathToTrainData = fullfile('..','data','ASVspoof2017_train');
@@ -121,7 +122,7 @@ h = waitbar(0,'please wait');
 l = length(filelist);
 for i=1:length(filelist)
 %     tmp_fname = strcat(int2str(filelist(i)), '.wav');
-    tmp_fname = strcat(sprintf('%06d',filelist(i)))
+    tmp_fname = strcat(sprintf('%06d',filelist(i)),'.wav'); %for env1 only!!!
     filePath = fullfile(pathToEvalData, tmp_fname);
 %     [x,fs] = audioread(filePath);
     
@@ -151,6 +152,7 @@ disp('Done!');
 [Pmiss,Pfa] = rocch(scores(labels == 2),scores(labels == 3));
 EER = rocch2eer(Pmiss,Pfa) * 100;
 eer_name = strcat(Exp_ID, Env_ID, '.mat');
+eer_path = fullfile(EerSavePath);
 save(eer_name, 'EER');
 fprintf('EER is %.2f\n', EER);
 

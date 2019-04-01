@@ -25,7 +25,8 @@ addpath(genpath('utility'));
 addpath(genpath('CQCC_v1.0'));
 addpath(genpath('bosaris_toolkit'));
 % load vlfeat (for gmm training)
-run('vlfeat-0.9.21/toolbox/vl_setup');
+vlfeat_path = fullfile('.','vlfeat-0.9.21','toolbox','vl_setup');
+run(vlfeat_path);
 
 % set paths to the wave files and protocols
 pathToTrainData = fullfile('..','data','ASVspoof2017_train');
@@ -130,7 +131,7 @@ for i=1:length(filelist)
     tmp_fea = cqcc(x(:,1), fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
     x_cqcc = tmp_fea;
     
-    save_name = strrep(int2str(filelist(i)), '.wav', '_cqcc.mat');
+    save_name = strcat(int2str(filelist(i)),'_cqcc.mat');
     save_path = fullfile(EvalFeatureSavePath, save_name);
 %     parsave(save_path, tmp_fea);
 
@@ -151,7 +152,8 @@ disp('Done!');
 [Pmiss,Pfa] = rocch(scores(labels == 2),scores(labels == 3));
 EER = rocch2eer(Pmiss,Pfa) * 100;
 eer_name = strcat(Exp_ID, Env_ID, '.mat');
-save(eer_name, 'EER');
+eer_path = fullfile(EerSavePath, eer_name);
+save(eer_path, 'EER');
 fprintf('EER is %.2f\n', EER);
 
 
