@@ -59,7 +59,7 @@ disp('Extracting features for GENUINE training data...');
 genuineFeatureCell = cell(size(genuineIdx));
 parfor i=1:length(genuineIdx)
     tmp_fname = strcat(int2str(filelist(genuineIdx(i))), '.wav');
-    filePath = fullfile(pathToEvalData, tmp_fname);
+    filePath = fullfile(pathToTrainData, tmp_fname);
     
     [x, fs] = ReSamp(filePath, 16000);
     % featrue extraction
@@ -77,7 +77,7 @@ disp('Extracting features for SPOOF training data...');
 spoofFeatureCell = cell(size(spoofIdx));
 parfor i=1:length(spoofIdx)
     tmp_fname = strcat(int2str(filelist(spoofIdx(i))), '.wav');
-    filePath = fullfile(pathToEvalData, tmp_fname);
+    filePath = fullfile(pathToTrainData, tmp_fname);
     
     [x, fs] = ReSamp(filePath, 16000);
     % featrue extraction
