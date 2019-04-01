@@ -15,7 +15,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clear; close all; clc;
+% clear; close all; clc;
 Exp_ID = 'ExpAp1'
 Env_ID = 'Env4'
 
@@ -51,61 +51,61 @@ labels = protocol{2};
 % get indices of genuine and spoof files
 genuineIdx = find(labels == 2);
 spoofIdx = find(labels == 3);
-
-%% Feature extraction for training data
-
-% extract features for GENUINE training data and store in cell array
-disp('Extracting features for GENUINE training data...');
-genuineFeatureCell = cell(size(genuineIdx));
-parfor i=1:length(genuineIdx)
-    tmp_fname = strcat(int2str(filelist(genuineIdx(i))), '.wav');
-    filePath = fullfile(pathToTrainData, tmp_fname);
-    
-    [x, fs] = ReSamp(filePath, 16000);
-    % featrue extraction
-    tmp_fea = cqcc(x(:,1), fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
-    genuineFeatureCell{i} = tmp_fea;
-    
-    save_name = strcat(int2str(filelist(genuineIdx(i))),'_cqcc.mat');
-    save_path = fullfile(TrainFeatureSavePath, save_name);
-    parsave(save_path, tmp_fea);
-end
-disp('Done!');
-
-% extract features for SPOOF training data and store in cell array
-disp('Extracting features for SPOOF training data...');
-spoofFeatureCell = cell(size(spoofIdx));
-parfor i=1:length(spoofIdx)
-    tmp_fname = strcat(int2str(filelist(spoofIdx(i))), '.wav');
-    filePath = fullfile(pathToTrainData, tmp_fname);
-    
-    [x, fs] = ReSamp(filePath, 16000);
-    % featrue extraction
-    tmp_fea = cqcc(x(:,1), fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
-    spoofFeatureCell{i} = tmp_fea;
-    
-    save_name = strcat(int2str(filelist(spoofIdx(i))),'_cqcc.mat');
-    save_path = fullfile(TrainFeatureSavePath, save_name);
-    parsave(save_path, tmp_fea);
-end
-disp('Done!');
-
-
-%% GMM training
-
-% train GMM for GENUINE data
-disp('Training GMM for GENUINE...');
-[genuineGMM.m, genuineGMM.s, genuineGMM.w] = vl_gmm([genuineFeatureCell{:}], 512, 'verbose', 'MaxNumIterations',100);
-gen_save_path = fullfile(GmmSavePath,'genuineGMM.mat');
-save(gen_save_path,'-struct','genuineGMM');
-disp('Done!');
-
-% train GMM for SPOOF data
-disp('Training GMM for SPOOF...');
-[spoofGMM.m, spoofGMM.s, spoofGMM.w] = vl_gmm([spoofFeatureCell{:}], 512, 'verbose', 'MaxNumIterations',100);
-spf_save_path = fullfile(GmmSavePath,'spoofGMM.mat');
-save(spf_save_path,'-struct','spoofGMM');
-disp('Done!');
+% 
+% %% Feature extraction for training data
+% 
+% % extract features for GENUINE training data and store in cell array
+% disp('Extracting features for GENUINE training data...');
+% genuineFeatureCell = cell(size(genuineIdx));
+% parfor i=1:length(genuineIdx)
+%     tmp_fname = strcat(int2str(filelist(genuineIdx(i))), '.wav');
+%     filePath = fullfile(pathToTrainData, tmp_fname);
+%     
+%     [x, fs] = ReSamp(filePath, 16000);
+%     % featrue extraction
+%     tmp_fea = cqcc(x(:,1), fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
+%     genuineFeatureCell{i} = tmp_fea;
+%     
+%     save_name = strcat(int2str(filelist(genuineIdx(i))),'_cqcc.mat');
+%     save_path = fullfile(TrainFeatureSavePath, save_name);
+%     parsave(save_path, tmp_fea);
+% end
+% disp('Done!');
+% 
+% % extract features for SPOOF training data and store in cell array
+% disp('Extracting features for SPOOF training data...');
+% spoofFeatureCell = cell(size(spoofIdx));
+% parfor i=1:length(spoofIdx)
+%     tmp_fname = strcat(int2str(filelist(spoofIdx(i))), '.wav');
+%     filePath = fullfile(pathToTrainData, tmp_fname);
+%     
+%     [x, fs] = ReSamp(filePath, 16000);
+%     % featrue extraction
+%     tmp_fea = cqcc(x(:,1), fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
+%     spoofFeatureCell{i} = tmp_fea;
+%     
+%     save_name = strcat(int2str(filelist(spoofIdx(i))),'_cqcc.mat');
+%     save_path = fullfile(TrainFeatureSavePath, save_name);
+%     parsave(save_path, tmp_fea);
+% end
+% disp('Done!');
+% 
+% 
+% %% GMM training
+% 
+% % train GMM for GENUINE data
+% disp('Training GMM for GENUINE...');
+% [genuineGMM.m, genuineGMM.s, genuineGMM.w] = vl_gmm([genuineFeatureCell{:}], 512, 'verbose', 'MaxNumIterations',100);
+% gen_save_path = fullfile(GmmSavePath,'genuineGMM.mat');
+% save(gen_save_path,'-struct','genuineGMM');
+% disp('Done!');
+% 
+% % train GMM for SPOOF data
+% disp('Training GMM for SPOOF...');
+% [spoofGMM.m, spoofGMM.s, spoofGMM.w] = vl_gmm([spoofFeatureCell{:}], 512, 'verbose', 'MaxNumIterations',100);
+% spf_save_path = fullfile(GmmSavePath,'spoofGMM.mat');
+% save(spf_save_path,'-struct','spoofGMM');
+% disp('Done!');
 
 
 %% Feature extraction and scoring of evaluation data
