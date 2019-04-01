@@ -109,3 +109,15 @@ disp('Done!');
 
 
 
+%% Other Functions
+function parsave(fname, x)
+    save(fname, 'x', '-v6')
+end
+
+function [x_new, tar_freq] = ReSamp(fname, tar_freq)
+    [x,fs] = audioread(fname);
+    [P,Q] = rat(tar_freq/fs);
+    x_new = resample(x, P, Q);
+end
+
+
