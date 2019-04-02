@@ -17,8 +17,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear; close all; clc;
-Exp_ID = 'ExpB3'
-Env_ID = 'Env3'
+Exp_ID = 'ExpB1'
+Env_ID = 'Env1'
 
 % add required libraries to the path
 addpath(genpath('utility'));
@@ -53,7 +53,7 @@ labels = protocol{2};
 speakerID = protocol{3};
 
 % tain/eval set
-Env1_train = [1, 3, 5, 6, 8, 11];
+Env1_train = [-1, 1, 3, 5, 6, 8, 11];
 Env1_eval = [2, 4, 7, 9, 10, 12];
 Env2_train = [];
 Env2_eval = [];
