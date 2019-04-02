@@ -56,10 +56,10 @@ Matlab code: baseline_B.m
 
 | ID | Env | Train (speaker IDs) | Eval (speaker IDs) | EER |
 | --- | --- | --- | --- | --- |
-| B1 | Env1 |  |  |  |
+| B1 | Env1 | 1, 3, 5, 6, 8, 11 | 2, 4, 7, 9, 10, 12 |  |
 | B2 | Env2 |  |  |  |
-| B3 | Env3 |  |  |  |
-| B4 | Env4 |  |  |  |
+| B3 | Env3 | 0, 1, 27, 29, 31, 35, 36, 38, 41 | 26, 28, 30, 32, 37, 39, 40, 42, 49 |  |
+| B4 | Env4 | 0, 1, 42, 43, 44, 45 | 11, 46, 47, 48, 49 ,50 | 22.11 |
 
 
 ### Exp C:
@@ -74,7 +74,8 @@ Matlab code: baseline_C.m
 
 
 
-
+### Exp D:
+S+R 
 
 
 
