@@ -17,8 +17,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear; close all; clc;
-Exp_ID = 'ExpB4'
-Env_ID = 'Env4'
+Exp_ID = 'ExpB3'
+Env_ID = 'Env3'
 
 % add required libraries to the path
 addpath(genpath('utility'));
@@ -40,13 +40,6 @@ TrainFeatureSavePath = fullfile('.','intermediate','features',Exp_ID,'trn');
 EvalFeatureSavePath = fullfile('.','intermediate','features',Exp_ID,'eval');
 EerSavePath = fullfile('.','EER');
 
-% load gender labels
-GenderFile = fullfile('..','metadata','gender.txt');
-fileID = fopen(GenderFile);
-gender = textscan(fileID, '%d,%d');
-fclose(fileID);
-
-
 %% Feature extraction for training data
 
 % read train protocol (ReMASC)
@@ -60,14 +53,14 @@ labels = protocol{2};
 speakerID = protocol{3};
 
 % tain/eval set
-Env1_train = [];
-Env1_eval = [];
+Env1_train = [1, 3, 5, 6, 8, 11];
+Env1_eval = [2, 4, 7, 9, 10, 12];
 Env2_train = [];
 Env2_eval = [];
-Env3_train = [];
-Env3_eval = [];
-Env4_train = [0,1,42,43,44,45];
-Env4_eval = [11,46,47,48,49,50];
+Env3_train = [0, 1, 27, 29, 31, 35, 36, 38, 41];
+Env3_eval = [26, 28, 30, 32, 37, 39, 40, 42, 49];
+Env4_train = [0, 1, 42, 43, 44, 45];
+Env4_eval = [11, 46, 47, 48, 49, 50];
 trainList = eval(strcat(Env_ID, '_train'));
 evalList = eval(strcat(Env_ID, '_eval'));
 
@@ -144,7 +137,7 @@ speakerID = protocol{3};
 evalIdx = find(ismember(speakerID, evalList));
 
 % process each evaluation trial: feature extraction and scoring
-scores = zeros(size(filelist));
+scores = zeros(size(evalIdx));
 disp('Computing scores for evaluation trials...');
 h = waitbar(0,'please wait');
 l = length(evalIdx);
@@ -177,7 +170,7 @@ disp('Done!');
 %% Compute performance (EER)
 % [Pmiss,Pfa] =
 % rocch(scores(strcmp(labels,'genuine')),scores(strcmp(labels,'spoof')));
-[Pmiss,Pfa] = rocch(scores(labels == 2),scores(labels == 3));
+[Pmiss,Pfa] = rocch(scores(labels(evalIdx) == 2),scores(labels(evalIdx) == 3));
 EER = rocch2eer(Pmiss,Pfa) * 100;
 eer_name = strcat(Exp_ID, Env_ID, '.mat');
 eer_path = fullfile(EerSavePath, eer_name);
