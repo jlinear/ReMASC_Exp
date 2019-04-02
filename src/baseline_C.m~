@@ -30,15 +30,6 @@ run(vlfeat_path);
 % split train and eval set
 env = {'Env1','Env2','Env3','Env4'};
 trainSet = setdiff(env, Env_ID);
-evalSet = {Env_ID};
-
-
-
-% set save path:
-GmmSavePath = fullfile('.','intermediate','gmm',Exp_ID);
-TrainFeatureSavePath = fullfile('.','intermediate','features',Exp_ID,'trn');
-EvalFeatureSavePath = fullfile('.','intermediate','features',Exp_ID,'eval');
-EerSavePath = fullfile('.','EER');
 
 
 

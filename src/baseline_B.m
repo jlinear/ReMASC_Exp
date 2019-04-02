@@ -17,8 +17,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear; close all; clc;
-Exp_ID = 'ExpB1'
-Env_ID = 'Env1'
+Exp_ID = 'ExpB2'
+Env_ID = 'Env2'
 
 % add required libraries to the path
 addpath(genpath('utility'));
@@ -55,8 +55,8 @@ speakerID = protocol{3};
 % tain/eval set
 Env1_train = [-1, 1, 3, 5, 6, 8, 11];
 Env1_eval = [2, 4, 7, 9, 10, 12];
-Env2_train = [];
-Env2_eval = [];
+Env2_train = [11, 13, 15, 17, 20, 22, 23, 25, 28, 30, 31, 33];
+Env2_eval = [14, 16, 18, 19, 21, 24, 26, 27, 29, 32, 34];
 Env3_train = [0, 1, 27, 29, 31, 35, 36, 38, 41];
 Env3_eval = [26, 28, 30, 32, 37, 39, 40, 42, 49];
 Env4_train = [0, 1, 42, 43, 44, 45];
@@ -72,6 +72,7 @@ spoofIdx = find((labels == 3 & ismember(speakerID, trainList)));
 disp('Extracting features for GENUINE training data...');
 genuineFeatureCell = cell(size(genuineIdx));
 parfor i=1:length(genuineIdx)
+%     tmp_fname = strcat(sprintf('%06d',filelist(genuineIdx(i))),'.wav'); %for env1 only!!!
     tmp_fname = strcat(int2str(filelist(genuineIdx(i))), '.wav');
     filePath = fullfile(pathToTrainData, tmp_fname);
     
@@ -90,12 +91,18 @@ disp('Done!');
 disp('Extracting features for SPOOF training data...');
 spoofFeatureCell = cell(size(spoofIdx));
 parfor i=1:length(spoofIdx)
+%     tmp_fname = strcat(sprintf('%06d',filelist(spoofIdx(i))),'.wav'); %for env1 only!!!
     tmp_fname = strcat(int2str(filelist(spoofIdx(i))), '.wav');
     filePath = fullfile(pathToTrainData, tmp_fname);
     
     [x, fs] = ReSamp(filePath, 16000);
     % featrue extraction
     tmp_fea = cqcc(x(:,1), fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
+%     try
+%         tmp_fea = cqcc(x(:,1), fs, 96, fs/2, fs/2^10, 16, 29, 'ZsdD');
+%     catch
+%         disp(tmp_fname);
+%     end
     spoofFeatureCell{i} = tmp_fea;
     
     save_name = strcat(int2str(filelist(spoofIdx(i))),'_cqcc.mat');
@@ -143,7 +150,7 @@ h = waitbar(0,'please wait');
 l = length(evalIdx);
 for i=1:length(evalIdx)
     tmp_fname = strcat(int2str(filelist(evalIdx(i))), '.wav');
-%     tmp_fname = strcat(sprintf('%06d',filelist(i)),'.wav'); %for env1 only!!!
+%     tmp_fname = strcat(sprintf('%06d',filelist(evalIdx(i))),'.wav'); %for env1 only!!!
     filePath = fullfile(pathToEvalData, tmp_fname);
 %     [x,fs] = audioread(filePath);
     
