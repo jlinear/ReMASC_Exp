@@ -20,6 +20,8 @@ for line in lines:
 	item = line.split(',')
 	pt = '../data/Env2/' + str(item[0]) + '.wav'
 	if os.path.exists(pt) and item[0] not in s:
+		if item[7] == '':
+			line = line.replace(',,',',-1,')
 		new_lines.append(line)
 		s.add(item[0])
 
