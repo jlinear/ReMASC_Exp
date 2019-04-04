@@ -16,8 +16,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear; close all; clc;
-Exp_ID = 'ExpC1'
-Env_ID = 'Env1'
+Exp_ID = 'ExpC2'
+Env_ID = 'Env2'
 
 % add required libraries to the path
 addpath(genpath('utility'));
@@ -147,7 +147,7 @@ for i=1:length(filelist)
     
     save_name = strcat(int2str(filelist(i)),'_cqcc.mat');
     save_path = fullfile(EvalFeatureSavePath, save_name);
-%     parsave(save_path, tmp_fea);
+    parsave(save_path, tmp_fea);
 
     % score computation
     llk_genuine = mean(compute_llk(x_cqcc,genuineGMM.m,genuineGMM.s,genuineGMM.w));
