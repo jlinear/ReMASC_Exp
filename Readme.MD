@@ -1,13 +1,14 @@
-[# ReMASC Experiments
+# ReMASC Experiments
 This repository describes the experimental design and Matlab code for ReMASC , a Realistic Replay Attack Corpus for Voice Controlled Systems. The data collection process can be found in the following publication:
 
-Yuan Gong, Jian Yang, Jacob Huber, Mitchell MacKnight, Christian Poellabauer, "*](https://arxiv.org/abs/1904.03365)ReMASC: Realistic Replay Attack Corpus for Voice Controlled Systems*", arXiv preprint, April 2019.
+Yuan Gong, Jian Yang, Jacob Huber, Mitchell MacKnight, Christian Poellabauer, (https://arxiv.org/abs/1904.03365)ReMASC: Realistic Replay Attack Corpus for Voice Controlled Systems*", arXiv preprint, April 2019.
 
 ## Hierarchy:
 
 Before running the experiments, please download the dataset and split it based on the file hierarchy shown below. 
 
-1 *metadata* directory contains metadata descriptions for all .wav files.  
+1. *metadata* directory contains metadata descriptions for all .wav files.  
+
 .
 +-- Env1_meta
 |	+-- Env1_meta_aligned.csv
@@ -16,7 +17,8 @@ Before running the experiments, please download the dataset and split it based o
 +-- all_meta.csv
 +-- gender.txt
 
-2 *data* directory contains all data files in the form of .wav  
+2. *data* directory contains all data files in the form of .wav  
+
 .
 +-- ASVspoof2017_eval
 |	+-- ****.wav
@@ -30,9 +32,12 @@ Before running the experiments, please download the dataset and split it based o
 +-- Env1
 |	+-- ****.wav
 ...
-3 *src* directory stores all Matlab source code and dependencies.
+
+3. *src* directory stores all Matlab source code and dependencies.
+
 **vlfeat** is a very important dependency we used in the experiments, in case that the attached dependency does not work, you can download the dependency from http://www.vlfeat.org/index.html
 For each experiment indicated below, creat a directory hierarchy shown below under this path (./src). The imtermediate variables (features and GMM models) will be stored through this path. 
+
 .
 +-- intermediate
 |	+-- features
@@ -52,7 +57,8 @@ In this experiment, we train the baseline CQCC-GMM model using the RedDot Replay
 **Run the code:**
 ```
 baseline_A.m
-```For each experiment shown in the table below, change the Experiment ID and Environment ID according to the data path, and make sure the path defined in the code are all valid.
+```
+For each experiment shown in the table below, change the Experiment ID and Environment ID according to the data path, and make sure the path defined in the code are all valid.
 
 | ID | Training | Eval-Env1 | Eval-Env2 | Eval-Env3 | Eval-Env4 |
 | --- | --- | --- | --- | --- | --- |
@@ -64,7 +70,8 @@ baseline_A.m
 **Run the code:**
 ```
 baseline_Ap.m	
-```Similar to Exp A, change the Env ID accordingly. 
+```
+Similar to Exp A, change the Env ID accordingly. 
 
 | ID | Training | Eval-RedDot |
 | --- | --- | --- |
@@ -77,7 +84,8 @@ For each environment, we split the ReMASC dataset randomly into two disjoint and
 **Run the code:**
 ```
 baseline_B.m	
-```Similar to the above experiments, make sure the path are valid, and the only thing you need to do is change the experiment ID and environment ID before running. 
+```
+Similar to the above experiments, make sure the path are valid, and the only thing you need to do is change the experiment ID and environment ID before running. 
 
 | ID | Env | Train (speaker IDs) | Eval (speaker IDs) | EER |
 | --- | --- | --- | --- | --- |
@@ -93,7 +101,8 @@ When testing in each target environment, we train the baseline CQCC-GMM model us
 **Run the code:**
 ```
 baseline_C.m	
-```Due to the large amount of data included in this set of experiments, you can use the provided code for feature extraction and model training for each of the environment (comment out the evaluation section) and use the ‘*runExpC.m’* script  (unzip the runExpC.zip file) for fast evaluation. We strongly recommend that you use a machine with 64GB+ RAM to run this experiment. 
+```
+Due to the large amount of data included in this set of experiments, you can use the provided code for feature extraction and model training for each of the environment (comment out the evaluation section) and use the ‘*runExpC.m’* script  (unzip the runExpC.zip file) for fast evaluation. We strongly recommend that you use a machine with 64GB+ RAM to run this experiment. 
 
 | ID | Training | Eval | EER |
 | --- | --- | --- | --- |
