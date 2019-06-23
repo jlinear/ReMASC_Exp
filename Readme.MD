@@ -8,7 +8,7 @@ Yuan Gong, Jian Yang, Jacob Huber, Mitchell MacKnight, Christian Poellabauer, (h
 Before running the experiments, please download the dataset and split it based on the file hierarchy shown below. 
 
 1. *metadata* directory contains metadata descriptions for all .wav files.  
-
+```
 .
 +-- Env1_meta
 |	+-- Env1_meta_aligned.csv
@@ -16,9 +16,9 @@ Before running the experiments, please download the dataset and split it based o
 ...
 +-- all_meta.csv
 +-- gender.txt
-
+```
 2. *data* directory contains all data files in the form of .wav  
-
+```
 .
 +-- ASVspoof2017_eval
 |	+-- ****.wav
@@ -32,12 +32,12 @@ Before running the experiments, please download the dataset and split it based o
 +-- Env1
 |	+-- ****.wav
 ...
-
+```
 3. *src* directory stores all Matlab source code and dependencies.
 
 **vlfeat** is a very important dependency we used in the experiments, in case that the attached dependency does not work, you can download the dependency from http://www.vlfeat.org/index.html
 For each experiment indicated below, creat a directory hierarchy shown below under this path (./src). The imtermediate variables (features and GMM models) will be stored through this path. 
-
+```
 .
 +-- intermediate
 |	+-- features
@@ -46,7 +46,7 @@ For each experiment indicated below, creat a directory hierarchy shown below und
 |			+-- trn
 |	+-- gmm
 |		+-- ExpID
-
+```
 ## Experiments:
 
 We use the official [ASVspoof 2017 Challenge](http://www.asvspoof.org/index2017.html) baseline CQCC-GMM model that  uses constant Q cepstral coefficients (CQCC) features and Gaussian mixture model (GMM) classifier and apply exactly the same hyper-parameters. We further use conventional equal error rate (EER) as the metric for evaluation.
