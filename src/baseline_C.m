@@ -9,13 +9,16 @@
 % remaining environment setting.
 % ====================================================================================
 %
-% Download ReMASC dataset at: xxxxxxx
+% Download ReMASC dataset at: https://github.com/YuanGongND/ReMASC
 % Cite our paper:
-% xxxxxxxxxxxxx
+% Yuan Gong, Jian Yang, Jacob Huber, Mitchell MacKnight, Christian Poellabauer, 
+% "ReMASC: Realistic Replay Attack Corpus for Voice Controlled Systems", arXiv 
+% preprint, April 2019.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear; close all; clc;
+rng(0);
 Exp_ID = 'ExpC2'
 Env_ID = 'Env2'
 
